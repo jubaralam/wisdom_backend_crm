@@ -200,4 +200,8 @@ higherAuthorityRouter.delete("/customer/delete/:id", async (req, res) => {
   }
 });
 
+
+
+
+
 module.exports = higherAuthorityRouter;

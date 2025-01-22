@@ -10,8 +10,8 @@ const PORT = process.env.PORT || 5500;
 server.use(express.json());
 
 //cors Enables to allow seamless integration between backend and frontend, its required for the frontend
-const cors = require("cors")
-server.use(cors())
+const cors = require("cors");
+server.use(cors());
 const auth = require("./middleware/auth");
 
 const userRouter = require("./routes/user.route");
@@ -28,6 +28,14 @@ server.use(
   "/api/higher-authority",
   [auth, higherAuthority],
   higherAuthorityRouter
+);
+
+// for all statistics
+const statisticsRouter = require("./routes/statistics.route");
+server.use(
+  "/api/higher-authority/statistics",
+  [auth, higherAuthority],
+  statisticsRouter
 );
 
 server.listen(PORT, async () => {
