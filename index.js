@@ -11,11 +11,11 @@ server.use(express.json());
 
 const auth = require("./middleware/auth");
 
-const userRouter = require("./toutes/user.route");
+const userRouter = require("./routes/user.route");
 server.use("/api/user", userRouter);
 
 //customer router
-const customerRouter = require("./toutes/customer.route");
+const customerRouter = require("./routes/customer.route");
 server.use("/api/customer", auth, customerRouter);
 
 server.listen(PORT, async () => {
