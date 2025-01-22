@@ -1,7 +1,7 @@
 const express = require("express");
 const userRouter = express.Router();
 
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/user.model");
@@ -9,9 +9,8 @@ const UserModel = require("../models/user.model");
 // const saltRound = process.env.saltRound;
 // user registeration route
 userRouter.post("/register", async (req, res) => {
-    const { name, email, password, phone_no, company } = req.body;
-    try {
-      
+  const { name, email, password, phone_no, company } = req.body;
+  try {
     if (!name || !email || !password || !phone_no || !company) {
       return res.status(400).send({ message: "All fields are required" });
     }

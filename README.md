@@ -464,3 +464,223 @@ PUT /update/12345
 ```javascript
 DELETE /delete/12345
 ```
+
+
+
+
+
+
+# Higher Authority Router Documentation
+
+## Overview
+This module defines routes for higher authority operations such as managing users and customers, enabling authorized personnel to view, update, and delete resources. The routes are built using `Express.js` and interact with a `MongoDB` database via Mongoose.
+
+## Dependencies
+
+```javascript
+const express = require("express");
+const higherAuthorityRouter = express.Router();
+
+const UserModel = require("../models/user.model");
+const CustomerModel = require("../models/customer.model");
+```
+
+## Routes
+
+### Get All Users
+
+#### Endpoint
+`GET /users`
+
+#### Description
+Retrieves all users registered in the system.
+
+#### Response
+- `200 OK`: Returns a list of all users.
+- `404 Not Found`: No users found.
+- `500 Internal Server Error`: An error occurred.
+
+### Delete a User
+
+#### Endpoint
+`DELETE /user/:id`
+
+#### Description
+Deletes a specific user based on their ID.
+
+#### Request Parameters
+- `id` (string): User ID.
+
+#### Response
+- `200 OK`: User deleted successfully.
+- `404 Not Found`: User does not exist.
+- `500 Internal Server Error`: An error occurred.
+
+### Get All Customers
+
+#### Endpoint
+`GET /customers`
+
+#### Description
+Retrieves all customers registered in the system.
+
+#### Response
+- `200 OK`: Returns a list of all customers.
+- `404 Not Found`: No customers found.
+- `500 Internal Server Error`: An error occurred.
+
+### Delete a Customer
+
+#### Endpoint
+`DELETE /customer/:id`
+
+#### Description
+Deletes a specific customer based on their ID.
+
+#### Request Parameters
+- `id` (string): Customer ID.
+
+#### Response
+- `200 OK`: Customer deleted successfully.
+- `404 Not Found`: Customer does not exist.
+- `500 Internal Server Error`: An error occurred.
+
+## Error Handling
+All routes handle errors gracefully by returning appropriate HTTP status codes and error messages.
+
+## Authorization
+These routes are protected and require higher authority credentials to access. Ensure proper authentication and authorization middleware is applied.
+
+## Example Usage
+
+### Get All Users
+```javascript
+GET /users
+```
+
+### Delete a User
+```javascript
+DELETE /user/12345
+```
+
+### Get All Customers
+```javascript
+GET /customers
+```
+
+### Delete a Customer
+```javascript
+DELETE /customer/67890
+
+
+
+
+# Statistics Router Documentation
+
+## Overview
+This router provides statistical data about customers and users. The endpoints allow fetching metrics such as total counts, new additions, and activity levels. It is built using `Express.js`, `Mongoose`, and the `moment` library for date manipulation.
+
+---
+
+## Dependencies
+
+```javascript
+const express = require("express");
+const statisticsRouter = express.Router();
+const moment = require("moment");
+
+const UserModel = require("../models/user.model");
+const CustomerModel = require("../models/customer.model");
+```
+
+---
+
+## Routes
+
+### Get Customer Statistics
+
+#### Endpoint
+`GET /customers`
+
+#### Description
+Fetches statistical data about customers, including:
+- Total customers in the database.
+- Number of new customers added since the start of the current month.
+- Number of active customers in the last 30 days (based on updates).
+
+#### Response
+- **`200 OK`**: Returns an object with customer statistics:
+  - `totalCustomers`: Total number of customers.
+  - `newCustomers`: Customers added since the start of the month.
+  - `activeCustomers`: Customers updated within the last 30 days.
+- **`500 Internal Server Error`**: Returns an error message if the request fails.
+
+#### Example Response
+```json
+{
+  "data": {
+    "totalCustomers": 150,
+    "newCustomers": 20,
+    "activeCustomers": 45
+  }
+}
+```
+
+---
+
+### Get User Role Statistics
+
+#### Endpoint
+`GET /users`
+
+#### Description
+Fetches aggregated data on users grouped by their roles.
+
+#### Response
+- **`200 OK`**: Returns an array of objects, each containing:
+  - `_id`: The role name (e.g., `admin`, `user`).
+  - `role_count`: The number of users with that role.
+- **`500 Internal Server Error`**: Returns an error message if the request fails.
+
+#### Example Response
+```json
+{
+  "data": [
+    { "_id": "admin", "role_count": 10 },
+    { "_id": "user", "role_count": 40 }
+  ]
+}
+```
+
+---
+
+## Error Handling
+All routes implement error handling to ensure appropriate responses are sent in case of issues. Errors return a `500 Internal Server Error` status with a descriptive message.
+
+---
+
+## Example Usage
+
+### Fetch Customer Statistics
+```bash
+GET /customers
+```
+
+### Fetch User Role Statistics
+```bash
+GET /users
+```
+
+---
+
+## Future Enhancements
+- Add more granular filters for date ranges.
+- Provide support for role-based access control to secure endpoints.
+- Include additional customer and user metrics as needed.
+
+---
+
+## Module Export
+
+```javascript
+module.exports = statisticsRouter;
