@@ -9,7 +9,18 @@ const userSchema = mongoose.Schema(
     phone_no: { type: Number, required: true },
     company: { type: String, required: true },
     password: { type: String, required: true },
-    role: { type: String, default: "user" },
+    role: {
+      type: String,
+      default: "sales_person",
+      enum: [
+        "admin",
+        "manager",
+        "sales_person",
+        "support_agent",
+        "marketing_specialist",
+        "auditor",
+      ],
+    },
   },
   {
     timestapms: true,

@@ -7,12 +7,16 @@ const connection = require("./config/db");
 
 const PORT = process.env.PORT || 5500;
 
-server.use(express.json())
+server.use(express.json());
 
+const auth = require("./middleware/auth");
 
-const userRouter = require("./routes/user.route")
-server.use("/api/user",userRouter)
+const userRouter = require("./toutes/user.route");
+server.use("/api/user", userRouter);
 
+//customer router
+const customerRouter = require("./toutes/customer.route");
+server.use("/api/customer", auth, customerRouter);
 
 server.listen(PORT, async () => {
   try {
