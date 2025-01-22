@@ -231,6 +231,110 @@ Registers a new customer.
 - `409 Conflict`: Email is already registered.
 - `500 Internal Server Error`: An error occurred.
 
+# Customer Search and Filter API
+
+## **Endpoint**
+
+`GET /search`
+
+---
+
+## **Description**
+
+This endpoint allows users to search and filter customers based on multiple parameters like `name`, `email`, `phone`, and `company`. It supports pagination to retrieve results in smaller chunks for better performance.
+
+---
+
+## **Query Parameters**
+
+| Parameter | Type   | Required | Description                                              |
+| --------- | ------ | -------- | -------------------------------------------------------- |
+| `name`    | String | Optional | Search for customers by name (case-insensitive).         |
+| `email`   | String | Optional | Search for customers by email (case-insensitive).        |
+| `phone`   | String | Optional | Search for customers by phone number (case-insensitive). |
+| `company` | String | Optional | Search for customers by company name (case-insensitive). |
+| `page`    | Number | Optional | Page number for pagination. Defaults to `1`.             |
+| `limit`   | Number | Optional | Number of customers per page. Defaults to `10`.          |
+
+---
+
+## **Responses**
+
+### **Success Response**
+
+- **Status Code**: `200 OK`
+- **Body**:
+  ```json
+  {
+    "data": [
+      {
+        "_id": "customer_id_1",
+        "name": "John Doe",
+        "email": "johndoe@example.com",
+        "phone": "1234567890",
+        "company": "Example Inc"
+      },
+      {
+        "_id": "customer_id_2",
+        "name": "Jane Smith",
+        "email": "janesmith@example.com",
+        "phone": "0987654321",
+        "company": "Another Co"
+      }
+    ],
+    "page": 1,
+    "limit": 10
+  }
+  ```
+
+---
+
+### **Error Responses**
+
+1. **No Customers Found**
+
+   - **Status Code**: `404 Not Found`
+   - **Body**:
+     ```json
+     {
+       "message": "No customers found"
+     }
+     ```
+
+2. **Internal Server Error**
+   - **Status Code**: `500 Internal Server Error`
+   - **Body**:
+     ```json
+     {
+       "message": "An error occurred.",
+       "error": "Detailed error message"
+     }
+     ```
+
+---
+
+## **Example Requests**
+
+1. **Search by Name**
+   ```http
+   GET /search?name=John
+   Search by Multiple Filters
+   ```
+
+http
+Copy
+Edit
+GET /search?name=John&email=johndoe@example.com
+Paginated Search
+
+http
+Copy
+Edit
+GET /search?company=Example&page=2&limit=5
+Notes
+The name, email, phone, and company fields support partial and case-insensitive matching using regex.
+The page and limit parameters help in controlling the number of results returned per request.
+
 ### Get Customer by ID
 
 #### Endpoint

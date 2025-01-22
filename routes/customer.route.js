@@ -36,6 +36,32 @@ customerRouter.post("/register", async (req, res) => {
   }
 });
 
+// search adn filter customers
+customerRouter.get("/search", async (req, res) => {
+  const { name, email, phone, company, page = 1, limit = 10 } = req.query;
+
+  try {
+    const query = {};
+    if (name) query.name = { $regex: name, $options: "i" }; // case-insensitive search
+    if (email) query.email = { $regex: email, $options: "i" }; // case-insensitive search
+    if (phone) query.phone = { $regex: phone, $options: "i" }; // case-insensitive search
+    if (company) query.company = { $regex: company, $options: "i" }; // case-insensitive search
+
+    const customers = await CustomerModel.find(query)
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
+
+    if (customers.length === 0) {
+      return res.status(404).send({ message: "No customers found" });
+    }
+
+    res.status(200).send({ data: customers });
+  } catch (error) {
+    res.status(500).send({ message: "An error occurred.", error: error.message });
+
+  }
+});
+
 //get all customers who has created by self
 customerRouter.get("/:id", async (req, res) => {
   const user_id = req.user._id;
@@ -71,7 +97,7 @@ customerRouter.get("/", async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .send({ message: "An error occurred. Please try again later." });
+      .send({ message: "An error occurred. Please try again later ." });
   }
 });
 
@@ -152,4 +178,8 @@ customerRouter.delete("/delete/:id", async (req, res) => {
       .send({ message: "An error occurred. Please try again later." });
   }
 });
+
+
+
+
 module.exports = customerRouter;
