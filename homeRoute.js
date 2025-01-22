@@ -27,7 +27,7 @@ homeRoute.get("/", (req, res) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>README</title>
       </head>
-      <body>
+      <body style="margin:20px">
         ${htmlContent}
       </body>
       </html>
