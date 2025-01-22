@@ -15,7 +15,7 @@ This documentation provides an overview of the `userRouter` routes for user mana
   - `UserModel`: MongoDB model for user management.
 - **Environment Variables:**
   - `process.env.secretKey`: Secret key for JWT token generation.
-  - `process.env.saltRound` (optional): Salt rounds for bcrypt (default: `10`).
+
 
 ---
 
