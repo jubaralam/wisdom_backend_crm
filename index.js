@@ -18,6 +18,15 @@ server.use("/api/user", userRouter);
 const customerRouter = require("./routes/customer.route");
 server.use("/api/customer", auth, customerRouter);
 
+//higher Authority Router (for admin, manager, auditor)
+const higherAuthority = require("./middleware/higherAuthority");
+const higherAuthorityRouter = require("./routes/higherAuthority.route");
+server.use(
+  "/api/higher-authority",
+  [auth, higherAuthority],
+  higherAuthorityRouter
+);
+
 server.listen(PORT, async () => {
   try {
     await connection;

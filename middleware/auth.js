@@ -27,7 +27,7 @@ const auth = async (req, res, next) => {
 
     if (!requiredRoles.includes(user.role)) {
       return res.status(403).send({
-        message: "Forbidden. You do not have access to this resource.",
+        message: "Forbidden. You do not have access to this resource auth.",
       });
     }
 

@@ -57,8 +57,9 @@ customerRouter.get("/search", async (req, res) => {
 
     res.status(200).send({ data: customers });
   } catch (error) {
-    res.status(500).send({ message: "An error occurred.", error: error.message });
-
+    res
+      .status(500)
+      .send({ message: "An error occurred.", error: error.message });
   }
 });
 
@@ -87,8 +88,11 @@ customerRouter.get("/:id", async (req, res) => {
 });
 customerRouter.get("/", async (req, res) => {
   const user_id = req.user._id;
+  const {page = 1, limit = 10} = req.query
   try {
-    const customers = await CustomerModel.find({ user_id });
+    const customers = await CustomerModel.find({ user_id })
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
     if (customers.length === 0) {
       return res.status(404).send({ message: "No customers found" });
     }
@@ -178,8 +182,5 @@ customerRouter.delete("/delete/:id", async (req, res) => {
       .send({ message: "An error occurred. Please try again later." });
   }
 });
-
-
-
 
 module.exports = customerRouter;
