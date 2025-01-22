@@ -38,6 +38,10 @@ server.use(
   statisticsRouter
 );
 
+const homeRoute = require("./homeRoute");
+
+server.use("/", homeRoute);
+
 server.listen(PORT, async () => {
   try {
     await connection;
