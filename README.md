@@ -16,10 +16,11 @@ This documentation provides an overview of the `userRouter` routes for user mana
 - **Environment Variables:**
   - `process.env.secretKey`: Secret key for JWT token generation.
 
-
 ---
 
 ## Routes
+
+## bash url domain-name/api/user
 
 ### 1. **User Registration**
 
@@ -157,7 +158,14 @@ curl -X POST http://localhost:3000/register \
 
 **Login a User:**
 
+## bash url domain-name/api/user
+
 ```bash
+
+
+
+
+
 curl -X POST http://localhost:3000/login \
 -H "Content-Type: application/json" \
 -d '{
@@ -169,7 +177,7 @@ curl -X POST http://localhost:3000/login \
 **Update a User:**
 
 ```bash
-curl -X PUT http://localhost:3000/update/USER_ID \
+curl -X PUT /update/USER_ID \
 -H "Content-Type: application/json" \
 -d '{
   "name": "Updated Name",
@@ -180,7 +188,7 @@ curl -X PUT http://localhost:3000/update/USER_ID \
 **Delete a User:**
 
 ````bash
-curl -X DELETE http://localhost:3000/delete/USER_ID
+curl -X DELETE delete/USER_ID
 
 
 
@@ -465,14 +473,10 @@ PUT /update/12345
 DELETE /delete/12345
 ```
 
-
-
-
-
-
 # Higher Authority Router Documentation
 
 ## Overview
+
 This module defines routes for higher authority operations such as managing users and customers, enabling authorized personnel to view, update, and delete resources. The routes are built using `Express.js` and interact with a `MongoDB` database via Mongoose.
 
 ## Dependencies
@@ -487,15 +491,20 @@ const CustomerModel = require("../models/customer.model");
 
 ## Routes
 
+## bash url domain-name/api/higher-authority/
+
 ### Get All Users
 
 #### Endpoint
+
 `GET /users`
 
 #### Description
+
 Retrieves all users registered in the system.
 
 #### Response
+
 - `200 OK`: Returns a list of all users.
 - `404 Not Found`: No users found.
 - `500 Internal Server Error`: An error occurred.
@@ -503,15 +512,19 @@ Retrieves all users registered in the system.
 ### Delete a User
 
 #### Endpoint
+
 `DELETE /user/:id`
 
 #### Description
+
 Deletes a specific user based on their ID.
 
 #### Request Parameters
+
 - `id` (string): User ID.
 
 #### Response
+
 - `200 OK`: User deleted successfully.
 - `404 Not Found`: User does not exist.
 - `500 Internal Server Error`: An error occurred.
@@ -519,12 +532,15 @@ Deletes a specific user based on their ID.
 ### Get All Customers
 
 #### Endpoint
+
 `GET /customers`
 
 #### Description
+
 Retrieves all customers registered in the system.
 
 #### Response
+
 - `200 OK`: Returns a list of all customers.
 - `404 Not Found`: No customers found.
 - `500 Internal Server Error`: An error occurred.
@@ -532,44 +548,54 @@ Retrieves all customers registered in the system.
 ### Delete a Customer
 
 #### Endpoint
+
 `DELETE /customer/:id`
 
 #### Description
+
 Deletes a specific customer based on their ID.
 
 #### Request Parameters
+
 - `id` (string): Customer ID.
 
 #### Response
+
 - `200 OK`: Customer deleted successfully.
 - `404 Not Found`: Customer does not exist.
 - `500 Internal Server Error`: An error occurred.
 
 ## Error Handling
+
 All routes handle errors gracefully by returning appropriate HTTP status codes and error messages.
 
 ## Authorization
+
 These routes are protected and require higher authority credentials to access. Ensure proper authentication and authorization middleware is applied.
 
 ## Example Usage
 
 ### Get All Users
+
 ```javascript
-GET /users
+GET / users;
 ```
 
 ### Delete a User
+
 ```javascript
-DELETE /user/12345
+DELETE / user / 12345;
 ```
 
 ### Get All Customers
+
 ```javascript
-GET /customers
+GET / customers;
 ```
 
 ### Delete a Customer
-```javascript
+
+````javascript
 DELETE /customer/67890
 
 
@@ -591,7 +617,7 @@ const moment = require("moment");
 
 const UserModel = require("../models/user.model");
 const CustomerModel = require("../models/customer.model");
-```
+````
 
 ---
 
@@ -599,16 +625,22 @@ const CustomerModel = require("../models/customer.model");
 
 ### Get Customer Statistics
 
+## base url domain-name/api/user
+
 #### Endpoint
+
 `GET /customers`
 
 #### Description
+
 Fetches statistical data about customers, including:
+
 - Total customers in the database.
 - Number of new customers added since the start of the current month.
 - Number of active customers in the last 30 days (based on updates).
 
 #### Response
+
 - **`200 OK`**: Returns an object with customer statistics:
   - `totalCustomers`: Total number of customers.
   - `newCustomers`: Customers added since the start of the month.
@@ -616,6 +648,7 @@ Fetches statistical data about customers, including:
 - **`500 Internal Server Error`**: Returns an error message if the request fails.
 
 #### Example Response
+
 ```json
 {
   "data": {
@@ -631,18 +664,22 @@ Fetches statistical data about customers, including:
 ### Get User Role Statistics
 
 #### Endpoint
+
 `GET /users`
 
 #### Description
+
 Fetches aggregated data on users grouped by their roles.
 
 #### Response
+
 - **`200 OK`**: Returns an array of objects, each containing:
   - `_id`: The role name (e.g., `admin`, `user`).
   - `role_count`: The number of users with that role.
 - **`500 Internal Server Error`**: Returns an error message if the request fails.
 
 #### Example Response
+
 ```json
 {
   "data": [
@@ -655,6 +692,7 @@ Fetches aggregated data on users grouped by their roles.
 ---
 
 ## Error Handling
+
 All routes implement error handling to ensure appropriate responses are sent in case of issues. Errors return a `500 Internal Server Error` status with a descriptive message.
 
 ---
@@ -662,11 +700,13 @@ All routes implement error handling to ensure appropriate responses are sent in 
 ## Example Usage
 
 ### Fetch Customer Statistics
+
 ```bash
 GET /customers
 ```
 
 ### Fetch User Role Statistics
+
 ```bash
 GET /users
 ```
@@ -674,6 +714,7 @@ GET /users
 ---
 
 ## Future Enhancements
+
 - Add more granular filters for date ranges.
 - Provide support for role-based access control to secure endpoints.
 - Include additional customer and user metrics as needed.
@@ -684,3 +725,4 @@ GET /users
 
 ```javascript
 module.exports = statisticsRouter;
+```
