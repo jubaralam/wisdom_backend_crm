@@ -56,7 +56,7 @@ userRouter.post("/login", async (req, res) => {
       expiresIn: "24h",
     });
     console.log(user);
-    res.status(200).send({ message: "you have loggedIn", token: token });
+    res.status(200).send({ message: "you have loggedIn", token: token, user });
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
