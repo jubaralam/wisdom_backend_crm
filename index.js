@@ -33,7 +33,7 @@ server.use(
 // for all statistics
 const statisticsRouter = require("./routes/statistics.route");
 server.use(
-  "/api/higher-authority/statistics",
+  "/api/statistics",
   [auth, higherAuthority],
   statisticsRouter
 );
