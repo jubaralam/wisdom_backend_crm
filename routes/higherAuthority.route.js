@@ -4,12 +4,20 @@ const higherAuthorityRouter = express.Router();
 const UserModel = require("../models/user.model");
 const CustomerModel = require("../models/customer.model");
 
+
+
 higherAuthorityRouter.get("/users", async (req, res) => {
   const { page = 1, limit = 10, role } = req.query;
+  const { company } = req.user;
 
   try {
-    const query = {};
+    const query = { company };
     if (role) query.role = role;
+
+    // 1️⃣ Count total users matching the query
+    const totalUsers = await UserModel.countDocuments(query);
+
+    // 2️⃣ Fetch paginated users
     const users = await UserModel.find(query)
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
@@ -18,13 +26,26 @@ higherAuthorityRouter.get("/users", async (req, res) => {
       return res.status(404).send({ message: "No User found" });
     }
 
-    res.status(200).send({ data: users });
+    // 3️⃣ Calculate total pages
+    const totalPages = Math.ceil(totalUsers / limit);
+
+    // 4️⃣ Send paginated data with metadata
+    res.status(200).send({
+      data: users,
+      meta: {
+        currentPage: parseInt(page),
+        totalPages,
+        totalUsers,
+        limit: parseInt(limit),
+      },
+    });
   } catch (error) {
     res
       .status(500)
       .send({ message: "An error occurred. Please try again later." });
   }
 });
+
 // Update user route
 higherAuthorityRouter.put("/user/update/:id", async (req, res) => {
   const { id } = req.params;

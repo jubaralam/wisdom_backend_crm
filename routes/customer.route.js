@@ -88,22 +88,41 @@ customerRouter.get("/:id", async (req, res) => {
 });
 customerRouter.get("/", async (req, res) => {
   const user_id = req.user._id;
-  const {page = 1, limit = 10} = req.query
+  const { page = 1, limit = 10 } = req.query;
+
   try {
+    // 1️⃣ Count total customers for the user
+    const totalCustomers = await CustomerModel.countDocuments({ user_id });
+
+    // 2️⃣ Fetch paginated customers
     const customers = await CustomerModel.find({ user_id })
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
+
     if (customers.length === 0) {
       return res.status(404).send({ message: "No customers found" });
     }
 
-    res.status(200).send({ data: customers });
+    // 3️⃣ Calculate total pages
+    const totalPages = Math.ceil(totalCustomers / limit);
+
+    // 4️⃣ Send response with pagination metadata
+    res.status(200).send({
+      data: customers,
+      meta: {
+        currentPage: parseInt(page),
+        totalPages,
+        totalCustomers,
+        limit: parseInt(limit),
+      },
+    });
   } catch (error) {
     res
       .status(500)
-      .send({ message: "An error occurred. Please try again later ." });
+      .send({ message: "An error occurred. Please try again later." });
   }
 });
+
 
 // Update customer route
 customerRouter.put("/update/:id", async (req, res) => {
