@@ -5,11 +5,12 @@ const UserModel = require("../models/user.model");
 const CustomerModel = require("../models/customer.model");
 
 higherAuthorityRouter.get("/users", async (req, res) => {
-  const { page = 1, limit = 10 } = req.query;
+  const { page = 1, limit = 10, role } = req.query;
 
   try {
-    const query = { page, limit };
-    const users = await UserModel.find()
+    const query = {};
+    if (role) query.role = role;
+    const users = await UserModel.find(query)
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
 
@@ -199,9 +200,5 @@ higherAuthorityRouter.delete("/customer/delete/:id", async (req, res) => {
       .send({ message: "An error occurred. Please try again later." });
   }
 });
-
-
-
-
 
 module.exports = higherAuthorityRouter;
