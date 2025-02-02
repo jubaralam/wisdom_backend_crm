@@ -4,8 +4,6 @@ const higherAuthorityRouter = express.Router();
 const UserModel = require("../models/user.model");
 const CustomerModel = require("../models/customer.model");
 
-
-
 higherAuthorityRouter.get("/users", async (req, res) => {
   const { page = 1, limit = 10, role } = req.query;
   const { company } = req.user;
@@ -38,6 +36,26 @@ higherAuthorityRouter.get("/users", async (req, res) => {
         totalUsers,
         limit: parseInt(limit),
       },
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: "An error occurred. Please try again later." });
+  }
+});
+
+higherAuthorityRouter.get("/user/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await UserModel.findById({ _id: id });
+
+    if (user.length === 0) {
+      return res.status(404).send({ message: "No User found" });
+    }
+
+    res.status(200).send({
+      data: user,
     });
   } catch (error) {
     res
