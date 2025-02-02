@@ -25,7 +25,7 @@ server.use("/api/customer", auth, customerRouter);
 const higherAuthority = require("./middleware/higherAuthority");
 const higherAuthorityRouter = require("./routes/higherAuthority.route");
 server.use(
-  "/api/higher-authority",
+  "/api",
   [auth, higherAuthority],
   higherAuthorityRouter
 );
